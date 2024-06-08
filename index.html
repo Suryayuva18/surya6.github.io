@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Picture Update</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Update Profile Picture</h1>
+        <form class="profile-form">
+            <div class="profile-pic-wrapper" id="dropZone">
+                <img src="default-pic.jpg" alt="Profile Picture" id="profilePic" class="profile-pic">
+                <input type="file" id="picUpload" class="upload-input" accept="image/*">
+                <label for="picUpload" class="upload-btn">Change Picture</label>
+            </div>
+            <button type="button" class="reset-btn" id="resetBtn">Reset</button>
+            <button type="submit" class="submit-btn">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const profilePic = document.getElementById('profilePic');
+        const picUpload = document.getElementById('picUpload');
+        const resetBtn = document.getElementById('resetBtn');
+        const defaultPic = 'default-pic.jpg';
+
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropZone.classList.remove('dragover');
+            const [file] = event.dataTransfer.files;
+            if (file && file.type.startsWith('image/')) {
+                profilePic.src = URL.createObjectURL(file);
+            }
+        });
+
+        picUpload.addEventListener('change', (event) => {
+            const [file] = event.target.files;
+            if (file) {
+                profilePic.src = URL.createObjectURL(file);
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            profilePic.src = defaultPic;
+        });
+    </script>
+</body>
+</html>
